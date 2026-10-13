@@ -73,3 +73,49 @@ export function getMostListenedArtist(userID) {
     listenCount: highestCount,
   };
 }
+
+export function getMostListenedSongOnFridayNight(userID) {
+  const events = getListenEvents(userID);
+
+  const fridayNightEvents = events.filter((event) => {
+    const date = new Date(event.timestamp);
+    const day = date.getDay();
+    const hour = date.getHours();
+
+    return (
+      (day === 5 && hour >= 17) ||
+      (day === 6 && hour < 4)
+    );
+  });
+
+  if (fridayNightEvents.length === 0) {
+    return null;
+  }
+
+  const songCounts = {};
+
+  for (const event of fridayNightEvents) {
+    const songID = event.song_id;
+
+    if (songCounts[songID] === undefined) {
+      songCounts[songID] = 0;
+    }
+
+    songCounts[songID] = songCounts[songID] + 1;
+  }
+
+  let mostListenedSongID = null;
+  let highestCount = 0;
+
+  for (const [songID, count] of Object.entries(songCounts)) {
+    if (count > highestCount) {
+      highestCount = count;
+      mostListenedSongID = songID;
+    }
+  }
+
+  return {
+    ...getSong(mostListenedSongID),
+    listenCount: highestCount,
+  };
+}
