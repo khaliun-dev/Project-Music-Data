@@ -1,7 +1,19 @@
 import assert from "node:assert";
 import test from "node:test";
-import { countUsers } from "./common.mjs";
+import { countUsers, getMostListenedSong } from "./common.mjs";
 
 test("User count is correct", () => {
   assert.equal(countUsers(), 4);
+});
+
+test("Finds the most listened-to song for user 1", () => {
+  const result = getMostListenedSong("1");
+
+  assert.equal(result.title, "When Your Mind's Made Up");
+  assert.equal(result.artist, "The Swell Season");
+  assert.ok(result.listenCount > 0);
+});
+
+test("Returns null when a user has no listening events", () => {
+  assert.equal(getMostListenedSong("4"), null);
 });
