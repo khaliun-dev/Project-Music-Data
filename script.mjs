@@ -12,6 +12,14 @@ import {
   getTopGenres,
 } from "./common.mjs";
 
+// Map the existing user IDs to display names.
+const userNames = {
+  "1": "Mum",
+  "2": "Dad",
+  "3": "Son",
+  "4": "Daughter",
+};
+
 // Find the elements in our HTML.
 const userSelect = document.querySelector("#user-select");
 const status = document.querySelector("#status");
@@ -24,7 +32,7 @@ for (const userID of userIDs) {
   const option = document.createElement("option");
 
   option.value = userID;
-  option.textContent = `User ${userID}`;
+  option.textContent = userNames[userID] ?? `User ${userID}`;
 
   userSelect.append(option);
 }
@@ -71,6 +79,7 @@ function addAnswer(question, answer) {
 }
 
 // Add a question with a list of answers.
+// Don't show the question if there are no answers.
 function addListAnswer(question, items) {
   if (items.length === 0) {
     return;
@@ -94,6 +103,8 @@ function addListAnswer(question, items) {
 
 // Calculate and display the answers for one user.
 function displayUserResults(userID) {
+  const userName = userNames[userID] ?? `User ${userID}`;
+
   // Remove the previous user's answers.
   resultsList.replaceChildren();
 
@@ -101,11 +112,11 @@ function displayUserResults(userID) {
   const mostListenedSong = getMostListenedSong(userID);
 
   if (mostListenedSong === null) {
-    status.textContent = `User ${userID} didn't listen to any songs.`;
+    status.textContent = `${userName} didn't listen to any songs.`;
     return;
   }
 
-  status.textContent = `Showing listening insights for User ${userID}.`;
+  status.textContent = `Showing listening insights for ${userName}.`;
 
   // 1. Most-listened-to song by play count.
   addAnswer(
@@ -212,9 +223,3 @@ userSelect.addEventListener("change", () => {
 
   displayUserResults(selectedUserID);
 });
-
-// Show User 1 by default.
-if (userIDs.length > 0) {
-  userSelect.value = userIDs[0];
-  displayUserResults(userIDs[0]);
-}
