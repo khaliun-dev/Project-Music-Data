@@ -312,3 +312,34 @@ export function getSongsListenedEveryDay(userID) {
 
   return songsListenedEveryDay;
 }
+
+export function getTopGenres(userID) {
+  const events = getListenEvents(userID);
+
+  if (events.length === 0) {
+    return [];
+  }
+
+  const genreCounts = {};
+
+  for (const event of events) {
+    const songID = event.song_id;
+    const song = getSong(songID);
+    const genre = song.genre;
+
+    if (genreCounts[genre] === undefined) {
+      genreCounts[genre] = 0;
+    }
+
+    genreCounts[genre] = genreCounts[genre] + 1;
+  }
+
+  const sortedGenres = Object.entries(genreCounts).sort(
+    ([, countA], [, countB]) => countB - countA
+  );
+
+  return sortedGenres.slice(0, 3).map(([genre, listenCount]) => ({
+    genre,
+    listenCount,
+  }));
+}

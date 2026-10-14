@@ -10,6 +10,7 @@ import {
   getMostListenedSongOnFridayNightByTime,
   getLongestSongStreak,
   getSongsListenedEveryDay,
+  getTopGenres,
 } from "./common.mjs";
 
 test("User count is correct", () => {
@@ -161,4 +162,39 @@ test("Returns an empty array when no song was played every active day for user 3
 
 test("Returns an empty array when user 4 has no listening events", () => {
   assert.deepEqual(getSongsListenedEveryDay("4"), []);
+});
+
+test("Finds the top three genres for user 1", () => {
+  const result = getTopGenres("1");
+
+  assert.deepEqual(
+    result.map((item) => item.genre),
+    ["Pop", "Folk", "Punk"]
+  );
+
+  assert.ok(result.every((item) => item.listenCount > 0));
+});
+
+test("Returns only available genres for user 2", () => {
+  const result = getTopGenres("2");
+
+  assert.deepEqual(
+    result.map((item) => item.genre),
+    ["Pop"]
+  );
+
+  assert.ok(result.every((item) => item.listenCount > 0));
+});
+
+test("Finds the top three genres for user 3", () => {
+  const result = getTopGenres("3");
+
+  assert.deepEqual(
+    result.map((item) => item.genre),
+    ["Pop", "Folk", "House"]
+  );
+});
+
+test("Returns an empty array when user 4 has no listening events", () => {
+  assert.deepEqual(getTopGenres("4"), []);
 });
