@@ -244,3 +244,37 @@ export function getMostListenedSongOnFridayNightByTime(userID) {
     totalListeningSeconds: highestTime,
   };
 }
+
+export function getLongestSongStreak(userID) {
+  const events = getListenEvents(userID);
+
+  if (events.length === 0) {
+    return null;
+  }
+
+  let currentSongID = null;
+  let currentStreak = 0;
+  let longestSongID = null;
+  let longestStreak = 0;
+
+  for (const event of events) {
+    const songID = event.song_id;
+
+    if (songID === currentSongID) {
+      currentStreak = currentStreak + 1;
+    } else {
+      currentSongID = songID;
+      currentStreak = 1;
+    }
+
+    if (currentStreak > longestStreak) {
+      longestStreak = currentStreak;
+      longestSongID = currentSongID;
+    }
+  }
+
+  return {
+    ...getSong(longestSongID),
+    streakLength: longestStreak,
+  };
+}

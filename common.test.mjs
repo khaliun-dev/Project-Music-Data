@@ -8,6 +8,7 @@ import {
   getMostListenedSongByTime,
   getMostListenedArtistByTime,
   getMostListenedSongOnFridayNightByTime,
+  getLongestSongStreak,
 } from "./common.mjs";
 
 test("User count is correct", () => {
@@ -91,4 +92,43 @@ test("Returns null when user 3 has no Friday-night listening time", () => {
 
 test("Returns null when user 4 has no Friday-night listening time", () => {
   assert.equal(getMostListenedSongOnFridayNightByTime("4"), null);
+});
+
+test("Finds the longest song streak for user 1", () => {
+  const result = getLongestSongStreak("1");
+
+  assert.equal(result.title, "I Got Love");
+  assert.equal(result.artist, "The King Blues");
+  assert.equal(result.streakLength, 34);
+});
+
+test("Finds the longest song streak for user 2", () => {
+  const result = getLongestSongStreak("2");
+
+  assert.equal(result.title, "I Still Believe");
+  assert.equal(result.artist, "Frank Turner");
+  assert.equal(result.streakLength, 44);
+});
+
+test("Finds a longest song streak of 42 for user 3", () => {
+  const result = getLongestSongStreak("3");
+
+  assert.equal(result.streakLength, 42);
+
+  const validWinners = [
+    { title: "Tonight We Fly", artist: "The Divine Comedy" },
+    { title: "Be More Kind", artist: "Frank Turner" },
+  ];
+
+  assert.ok(
+    validWinners.some(
+      (song) =>
+        song.title === result.title &&
+        song.artist === result.artist
+    )
+  );
+});
+
+test("Returns null when a user has no listening events for streak", () => {
+  assert.equal(getLongestSongStreak("4"), null);
 });
