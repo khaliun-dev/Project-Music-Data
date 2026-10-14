@@ -9,6 +9,7 @@ import {
   getMostListenedArtistByTime,
   getMostListenedSongOnFridayNightByTime,
   getLongestSongStreak,
+  getSongsListenedEveryDay,
 } from "./common.mjs";
 
 test("User count is correct", () => {
@@ -131,4 +132,33 @@ test("Finds a longest song streak of 42 for user 3", () => {
 
 test("Returns null when a user has no listening events for streak", () => {
   assert.equal(getLongestSongStreak("4"), null);
+});
+
+test("Finds songs listened to every active day for user 1", () => {
+  const result = getSongsListenedEveryDay("1");
+
+  assert.deepEqual(
+    result.map((song) => `${song.artist} - ${song.title}`).sort(),
+    ["The Swell Season - When Your Mind's Made Up"]
+  );
+});
+
+test("Finds all songs listened to every active day for user 2", () => {
+  const result = getSongsListenedEveryDay("2");
+
+  assert.deepEqual(
+    result.map((song) => `${song.artist} - ${song.title}`).sort(),
+    [
+      "The Divine Comedy - Tonight We Fly",
+      "Frank Turner - Photosynthesis",
+    ].sort()
+  );
+});
+
+test("Returns an empty array when no song was played every active day for user 3", () => {
+  assert.deepEqual(getSongsListenedEveryDay("3"), []);
+});
+
+test("Returns an empty array when user 4 has no listening events", () => {
+  assert.deepEqual(getSongsListenedEveryDay("4"), []);
 });

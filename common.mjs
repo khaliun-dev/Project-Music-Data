@@ -278,3 +278,37 @@ export function getLongestSongStreak(userID) {
     streakLength: longestStreak,
   };
 }
+
+export function getSongsListenedEveryDay(userID) {
+  const events = getListenEvents(userID);
+
+  if (events.length === 0) {
+    return [];
+  }
+
+  const listeningDays = new Set();
+  const songDays = {};
+
+  for (const event of events) {
+    const songID = event.song_id;
+    const day = event.timestamp.slice(0, 10);
+
+    listeningDays.add(day);
+
+    if (songDays[songID] === undefined) {
+      songDays[songID] = new Set();
+    }
+
+    songDays[songID].add(day);
+  }
+
+  const songsListenedEveryDay = [];
+
+  for (const [songID, days] of Object.entries(songDays)) {
+    if (days.size === listeningDays.size) {
+      songsListenedEveryDay.push(getSong(songID));
+    }
+  }
+
+  return songsListenedEveryDay;
+}
