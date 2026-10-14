@@ -12,7 +12,7 @@ import {
   getTopGenres,
 } from "./common.mjs";
 
-// Map the existing user IDs to display names.
+
 const userNames = {
   "1": "Mum",
   "2": "Dad",
@@ -20,12 +20,12 @@ const userNames = {
   "4": "Daughter",
 };
 
-// Find the elements in our HTML.
+
 const userSelect = document.querySelector("#user-select");
 const status = document.querySelector("#status");
 const resultsList = document.querySelector("#results-list");
 
-// Get the available users and add them to the dropdown.
+
 const userIDs = getUserIDs();
 
 for (const userID of userIDs) {
@@ -37,12 +37,12 @@ for (const userID of userIDs) {
   userSelect.append(option);
 }
 
-// Convert a number of listens into readable text.
+
 function formatListenCount(count) {
   return `${count} ${count === 1 ? "listen" : "listens"}`;
 }
 
-// Convert total seconds into readable hours, minutes and seconds.
+
 function formatDuration(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -65,7 +65,7 @@ function formatDuration(totalSeconds) {
   return parts.join(", ");
 }
 
-// Add a question and its answer to the webpage.
+
 function addAnswer(question, answer) {
   const article = document.createElement("article");
   const heading = document.createElement("h3");
@@ -78,8 +78,7 @@ function addAnswer(question, answer) {
   resultsList.append(article);
 }
 
-// Add a question with a list of answers.
-// Don't show the question if there are no answers.
+
 function addListAnswer(question, items) {
   if (items.length === 0) {
     return;
@@ -101,14 +100,14 @@ function addListAnswer(question, items) {
   resultsList.append(article);
 }
 
-// Calculate and display the answers for one user.
+
 function displayUserResults(userID) {
   const userName = userNames[userID] ?? `User ${userID}`;
 
-  // Remove the previous user's answers.
+
   resultsList.replaceChildren();
 
-  // Check whether this user has any listening history.
+ 
   const mostListenedSong = getMostListenedSong(userID);
 
   if (mostListenedSong === null) {
@@ -118,13 +117,13 @@ function displayUserResults(userID) {
 
   status.textContent = `Showing listening insights for ${userName}.`;
 
-  // 1. Most-listened-to song by play count.
+
   addAnswer(
     "Most-listened-to song by play count",
     `${mostListenedSong.artist} — ${mostListenedSong.title} (${formatListenCount(mostListenedSong.listenCount)})`
   );
 
-  // 2. Most-listened-to artist by play count.
+ 
   const mostListenedArtist = getMostListenedArtist(userID);
 
   if (mostListenedArtist !== null) {
@@ -134,7 +133,7 @@ function displayUserResults(userID) {
     );
   }
 
-  // 3. Most-listened-to song on Friday night by play count.
+
   const fridayNightSong = getMostListenedSongOnFridayNight(userID);
 
   if (fridayNightSong !== null) {
@@ -144,7 +143,7 @@ function displayUserResults(userID) {
     );
   }
 
-  // 4a. Most-listened-to song by total listening time.
+
   const songByTime = getMostListenedSongByTime(userID);
 
   if (songByTime !== null) {
@@ -154,7 +153,7 @@ function displayUserResults(userID) {
     );
   }
 
-  // 4b. Most-listened-to artist by total listening time.
+
   const artistByTime = getMostListenedArtistByTime(userID);
 
   if (artistByTime !== null) {
@@ -164,7 +163,7 @@ function displayUserResults(userID) {
     );
   }
 
-  // 4c. Most-listened-to Friday-night song by listening time.
+  
   const fridaySongByTime =
     getMostListenedSongOnFridayNightByTime(userID);
 
@@ -175,7 +174,7 @@ function displayUserResults(userID) {
     );
   }
 
-  // 5. Longest consecutive-song streak.
+ 
   const longestStreak = getLongestSongStreak(userID);
 
   if (longestStreak !== null) {
@@ -185,7 +184,7 @@ function displayUserResults(userID) {
     );
   }
 
-  // 6. Songs listened to on every active day.
+  
   const everydaySongs = getSongsListenedEveryDay(userID);
 
   addListAnswer(
@@ -193,7 +192,7 @@ function displayUserResults(userID) {
     everydaySongs.map((song) => `${song.artist} — ${song.title}`)
   );
 
-  // 7. Top genres by play count.
+  
   const topGenres = getTopGenres(userID);
 
   if (topGenres.length > 0) {
@@ -211,7 +210,7 @@ function displayUserResults(userID) {
   }
 }
 
-// Update the answers whenever the dropdown changes.
+
 userSelect.addEventListener("change", () => {
   const selectedUserID = userSelect.value;
 

@@ -1,4 +1,4 @@
-/* 1. Global styles */
+
 * {
   box-sizing: border-box;
 }
@@ -18,7 +18,7 @@ body {
   min-width: 320px;
 }
 
-/* 2. Header */
+
 header {
   background: linear-gradient(135deg, #12243a, #203f59);
   color: #ffffff;
@@ -41,7 +41,7 @@ header p {
   font-size: 1.05rem;
 }
 
-/* 3. Main page layout */
+
 main {
   width: min(960px, calc(100% - 2rem));
   margin: 2rem auto 4rem;
@@ -58,7 +58,7 @@ h2 {
   letter-spacing: -0.02em;
 }
 
-/* 4. User dropdown */
+
 section[aria-labelledby="user-selection-heading"] {
   background: #ffffff;
   border: 1px solid #dce4ed;
@@ -91,7 +91,7 @@ select:focus-visible {
   outline-offset: 3px;
 }
 
-/* 5. Status message */
+
 #status {
   padding: 0.9rem 1rem;
   margin: 0 0 2rem;
@@ -101,7 +101,7 @@ select:focus-visible {
   color: #164b48;
 }
 
-/* 6. Results section */
+
 #results-heading {
   margin-bottom: 1.25rem;
 }
@@ -112,7 +112,7 @@ select:focus-visible {
   gap: 1rem;
 }
 
-/* 7. Individual answer cards */
+
 #results-list article {
   min-width: 0;
   padding: 1.25rem;
@@ -159,14 +159,14 @@ select:focus-visible {
   color: #168f86;
 }
 
-/* 8. Keyboard accessibility */
+
 a:focus-visible,
 button:focus-visible {
   outline: 3px solid #168f86;
   outline-offset: 3px;
 }
 
-/* 9. Smaller screens */
+
 @media (max-width: 640px) {
   header {
     padding: 2.25rem 1rem;
@@ -190,7 +190,7 @@ button:focus-visible {
   }
 }
 
-/* Respect users who prefer less movement */
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
