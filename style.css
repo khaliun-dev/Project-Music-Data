@@ -159,14 +159,6 @@ select:focus-visible {
   color: #168f86;
 }
 
-
-a:focus-visible,
-button:focus-visible {
-  outline: 3px solid #168f86;
-  outline-offset: 3px;
-}
-
-
 @media (max-width: 640px) {
   header {
     padding: 2.25rem 1rem;
